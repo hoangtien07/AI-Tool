@@ -1,0 +1,19 @@
+# Node/Next
+**/node_modules/
+**/.next/
+**/out/
+**/dist/
+**/build/
+**/.vercel/
+**/*.tsbuildinfo
+
+# Env & secrets
+**/.env
+**/.env.*
+!**/.env.example
+
+# Logs & OS
+**/*.log
+logs/
+.DS_Store
+Thumbs.db
