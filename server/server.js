@@ -1,4 +1,5 @@
 import express from "express";
+import MongoStore from "connect-mongo";
 import passport from "passport";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -30,7 +31,7 @@ connectDB();
 // await Blog.syncIndexes();
 
 // CORS: cho phép gọi từ FE domain
-const allow = (process.env.CORS_ORIGIN || '').split(',').map(s => s.trim());
+const allow = (process.env.CORS_ORIGIN || "").split(",").map((s) => s.trim());
 app.use(
   cors({
     // origin: "http://localhost:5173",
@@ -41,12 +42,23 @@ app.use(
     credentials: true, // Allow credentials (cookies, headers)
   })
 );
-
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
+    cookie: {
+      secure: true, // bắt buộc trên HTTPS
+      sameSite: "none", // để FE domain khác dùng cookie được
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI || process.env.MONGO_URI,
+      dbName: "ai-tooler",
+      touchAfter: 24 * 3600,
+    }),
   })
 );
 
