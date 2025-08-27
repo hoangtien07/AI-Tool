@@ -1,7 +1,7 @@
 // server/config/db.js
 import mongoose from "mongoose";
 
-const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
+const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
 
 if (!uri) {
   console.error("❌ Missing MONGODB_URI/MONGO_URI env");
